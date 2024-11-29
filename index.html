@@ -1,215 +1,69 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>Simple Form</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Build Form</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
     <script src="js/jquery-3.7.1.js"></script>
-    <script src="js/main.js"></script>
-    <style>
-
-    </style>
+    <script src="js/main.js" defer></script>
 </head>
 
 <body>
-    <div>
-        <div id="header-container">
-            <h1>Custom Build Form</h1>
-        </div>
-        <div id="app-container">
-            <div id="custom-input-form-container">
-
-                <form>
-                    <h2>My Custom Form</h2>
-                    <p>Add new entities. Configure inputs</p>
-                    <ul id="inputs">
-
-                    </ul>
-
-
-
-                    <div id="custom-form-btn-container">
-                        <button id="c" type="button" >Add New Field</button>
+    <div id="app-container">
+        <div id="custom-input-form-container">
+            <form>
+                <div id="header-container">
+                    <h2>Custom Form</h2>
+                </div>
+                <div id="input-fields-container">
+                    <ul id="input-fields"></ul>
+                </div>
+                <div id="custom-form-btn-container">
+                    <button id="custom-form-btn" type="button">Add New Entry</button>
+                </div>
+            </form>
+            <div id="custom-input">
+                <div id="container-idk">
+                    <div id="name-input-container">
+                        <div>
+                            <a>Name:</a><br>
+                            <input id="field-name" type="text" placeholder="Field name">
+                        </div>
+                        <div>
+                            <a>Type:</a><br>
+                            <input type="radio" id="text" name="field_type" value="Text" checked>
+                            <label for="text">Text</label><br>
+                            <input type="radio" id="select" name="field_type" value="Select">
+                            <label for="select">Select</label><br>
+                        </div>
                     </div>
-                    <div id="custom-form-btn-container">
-                        <button id="custom-form-btn" type="button">Add New Entry</button>
-                    </div>
-                </form>
-
-
-
-
-
-
-
-
-
-                <div id="custom-input">
-                    <div>
-                        <a>Name: </a> </br>
-                        <input id="field-name" type="text" placeholder="Table Name"></input>
-                    </div>
-
-                    <div>
-                        <a>Type: </a> </br>
-
-                        <input type="radio" id="text" name="fav_language" value="Text" checked>
-                        <label for="text">Text</label><br>
-                        <input type="radio" id="select" name="fav_language" value="Select">
-                        <label for="select">Select</label><br>
-                    </div>
-
-                    <div id="select-edit">
-                        <div>Choices:</div>
-                        <ul id="select-choices">
-
-                        </ul>
-                        <form>
-                            <input type="text" placeholder="choice" id="choice-name">
-                            <button type="button" id="choice-name-btn">+</button>
-                        </form>
-
-
+                    <div id="field-select-contaier">
+                        <div id="select-edit">
+                            <div>Choices:</div>
+                            <div id="choice-input-container">
+                                <input type="text" placeholder="Choice" id="choice-name">
+                                <button class="small-btn" type="button" id="add-choice-btn">+</button>
+                            </div>
+                            <ul id="select-choices"></ul>
+                        </div>
                     </div>
                 </div>
-                <button id="add-field-btn" type="button"> Add!</button>
+                <div id="add-field-container">
+                    <button id="add-field-btn" type="button">Add field</button>
+                </div>
 
             </div>
-
-            <table cellspacing=0 id="data-table">
-                <tr id="table-headers">
-                    
-                </tr>
-                <!-- <tr>
-                    <td>1</td>
-                    <td>Alfreds Futterkiste</td>
-                    <td>Maria Anders</td>
-                    <td>Germany</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Centro comercial Moctezuma</td>
-                    <td>Francisco Chang</td>
-                    <td>Mexico</td>
-                </tr> -->
-            </table>
-
-
-
-
-
         </div>
-
-    </div>
-
-    <script>
-        $(document).ready(function () {
-            const inputIds = []
-            $("input[type='radio'][name='fav_language']").change(function () {
-                if ($("#text").prop("checked")) {
-                    $("#select-edit").toggle()
-                } else if ($("#select").prop("checked")) {
-                    $("#select-edit").toggle()
-
-                }
-            });
-            $("#choice-name-btn").click(function () {
-                var choiceName = $("#choice-name").val()
-
-                if (choiceName) {
-                    const newChoice = $("<li>").text(choiceName);
-
-                    const removeBtn = $("<button>")
-                        .text("x")
-                        .click(function () {
-                            $(this).parent().remove();
-                        });
-
-                    newChoice.append(removeBtn);
-
-                    $("#select-choices").append(newChoice);
-                    $("#choice-name").val('');
-                }
-            })
-
-            $("#add-field-btn").click(function (e) {
-                e.preventDefault()
-                const fieldType = $("input[type='radio'][name='fav_language']:checked").val();
-                const fieldName = $("#field-name").val()
-                var choices = []
-
-                if (fieldType === "Text") {
-                    $("#field-name").val("")
-                    $("#inputs").append(`
-                    <li>
-                        <a>${fieldName}:</a>
-                        <input type="text" id="text-${fieldName}">
-                    </li>
-                    `)
-                    inputIds.push(`text-${fieldName}`)
-
-
-                } else if (fieldType === "Select") {
-                    $("#select-choices li").each(function () {
-                        const choiceText = $(this).clone()
-                            .children()
-                            .remove()
-                            .end()
-                            .text();
-                        choices.push(`<option value=${choiceText.trim()}>${choiceText.trim()}</option>`);
-
-                   
-                    });
-                    $("#inputs").append(`
-                            <li>
-                                <label>${fieldName}:</label>
-                                <select id="select-${fieldName}">
-                                    ${choices.map((e) => {return e})}
-                                </select>
-                            </li>`)
-                    inputIds.push(`select-${fieldName}`)
-
-                    alert("You chose a Select field with choices: " + choices.join(", "));
-                }
-
-                function clearInput() {
-                    $("#field-name").val("")
-                    $("#select-choices").empty();
-                }
-
-                $("#table-headers").append(`
-                    <td>${fieldName}</td>
-                `)
-
-                clearInput()
-
-            })
-            $("#custom-form-btn").click(function() {
-                var values = []
-                inputIds.map((id)=> {
-                    if (id.startsWith("text")) {
-                         const input = $(`#${id}`).val()
-                        values.push(input)
-                        document.getElementById(id).value = ""
-
-
-                    } else {
-                        const input = $(`#${id}`).val()
-                        values.push(input)
-                        document.getElementById(id).selectedIndex = 0;
-                    }
-                })
-                $("#data-table").append(`
-                    <tr>
-                        ${values.map((val)=> {
-                            return `<td>${val}</td>`
-                        })}
+        <div>
+            <table id="data-table">
+                    <tr id="table-headers">
+                        <th>Id</th>
                     </tr>
-                `);
-       
-            })
-        });
-    </script>
+            </table>
+        </div>
+    </div>
 </body>
 
 </html>

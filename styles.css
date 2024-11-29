@@ -1,3 +1,28 @@
+:root {
+    --primary-color: #3498db;
+    --background-color: #f4f4f4;
+    --text-color: #333;
+}
+
+* {
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: var(--background-color);
+    line-height: 1.6;
+    color: var(--text-color);
+}
+
+#app-container {
+    display: flex;
+    margin: 30px auto;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
 #table-header, #table-row {
     list-style-type: none;
     padding: 0;
@@ -15,9 +40,15 @@ td, th {
     padding: 5px;
     border: 1px solid black;
 }
+
+#add-row {
+    margin-top: 10px;
+}
+
 table {
     border-collapse: collapse;
-    width: 100%;
+    margin: 10px;
+    width: 50%;
 }
 
 table, th, td {
@@ -27,38 +58,92 @@ table, th, td {
 th, td {
     padding: 10px;
     text-align: left;
+    min-width: 50px;
+}
+th {
+    background-color: #e8f0fc;
 }
 
-form {
-    margin-top: 20px;
-}
-
-form input {
-    margin-right: 10px;
-}
-
-#add-row {
-    margin-top: 10px;
-}
 #custom-input-form-container {
-    border: 1px solid black;
     flex-direction: column;
-    display: inline-block;
-    padding: 10px;
+    display: flex;
+    padding: 40px;
+    width: 30%;
+    min-height: 500px;
+    justify-content: space-between;
+    margin: 10px;
+    background-color: white;
+    border-radius: 2%;
+    border-right: 1px solid #e0e0e0;
+}
+
+#header-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    border-bottom: 3px solid var(--primary-color);
+}
+
+h2 {
+    color: var(--primary-color)
+}
+
+#input-fields-container {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+#input-fields    {
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
+    align-self: center;
+    align-items:end;
+}
+
+#custom-form-btn-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+#custom-form-btn{
+    padding-right: 20px;
+    padding-left: 20px;
+    margin: 20px;
 }
 
 #custom-input{
+    width: 100%;
+}
+
+#container-idk{
     display: flex;
     flex-direction: row;
+    justify-content: center;
+}
 
+#name-input-container {
+    width: 60%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+#field-select-contaier {
+    width: 40%;
 }
 
 #select-edit{
-    display: none;
-
+    display: flex;
     flex-direction: column;
-    
+}
 
+#choice-input-container{
+    display: flex;
+    flex-direction: row;
 }
 
 #select-choices{
@@ -70,38 +155,67 @@ form input {
 
 }
 
-#header-container{
+#add-field-container{
     display: flex;
-    flex-direction: row;
+    width: 100%;
     justify-content: center;
+    flex-direction: row;
 }
 
-#app-container{
+.select-field-container {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    padding: 20px;
+}
+
+.selector-container {
+    width: 188px;
+    margin-left: 5px;
 
 }
 
-#data-table{
-    margin: 10px;
-    width: 50%;
+button {
+    background-color: var(--primary-color);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    color: white;
+    font-size: large;
 }
 
-#custom-input-form-container{
-    margin: 10px;
-    width: 600px;
+input[type="text"] {
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-left: 10px;
 }
-#custom-form-btn-container{
+
+select {
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-left: 5px;
+
+}
+
+
+
+.small-btn{
+    padding: 2px 8px;
+    margin-left: 5px;
+}
+
+li {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    align-items: center;
 }
 
-#custom-form-btn{
-    padding-right: 20px;
-    padding-left: 20px;
-    margin: 20px;
 
-}
+
+
+
+
