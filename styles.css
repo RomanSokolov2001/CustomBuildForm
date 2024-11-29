@@ -1,0 +1,60 @@
+#table-header, #table-row {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+
+#table-header-item, #row-item {
+    padding: 5px;
+    border: 1px solid black;
+}
+
+td, th {
+    margin: 0;
+    padding: 5px;
+    border: 1px solid black;
+}
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+form {
+    margin-top: 20px;
+}
+
+form input {
+    margin-right: 10px;
+}
+
+#add-row {
+    margin-top: 10px;
+}
+#custom-input-form-container {
+    border: 1px solid black;
+    flex-direction: column;
+    display: inline-block;
+    padding: 10px;
+}
+
+#custom-input{
+    flex-direction: row;
+
+}
+
+#select-edit{
+    display: none;
+
+    flex-direction: column;
+
+}
