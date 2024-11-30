@@ -124,6 +124,7 @@ h2 {
 #select-edit{
     display: flex;
     flex-direction: column;
+    margin-right: 10px
 }
 
 #choice-input-container{
