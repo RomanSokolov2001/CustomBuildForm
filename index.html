@@ -12,8 +12,8 @@
 
 <body>
     <div id="app-container">
-        <!-- Form Section -->
-        <div id="custom-input-form-container">
+        <!-- Form -->
+        <div id="custom-form-container">
             <form>
                 <header id="header-container">
                     <h2>Custom Form</h2>
@@ -23,13 +23,13 @@
                     <ul id="input-fields"></ul>
                 </div>
 
-                <div id="custom-form-btn-container">
-                    <button id="custom-form-btn" type="button">Add New Entry</button>
+                <div id="add-entry-container">
+                    <button id="add-entry-btn" type="button">Add New Entry</button>
                 </div>
             </form>
-
-            <div id="custom-input">
-                <section id="name-input-container">
+            <!-- Custom Field -->
+            <div>
+                <section id="add-type-name-container">
                     <div>
                         <label for="field-name">Name:</label><br>
                         <input id="field-name" type="text" placeholder="Field name" required>
@@ -45,13 +45,13 @@
                     </div>
                 </section>
 
-                <section id="select-edit">
+                <section id="add-choices-container">
                     <label>Choices:</label>
                     <div id="choice-input-container">
                         <input type="text" id="choice-name" placeholder="Choice">
                         <button class="small-btn" id="add-choice-btn" type="button">+</button>
                     </div>
-                    <ul id="select-choices"></ul>
+                    <ul id="added-choices"></ul>
                 </section>
 
                 <section id="add-field-container">
@@ -64,7 +64,7 @@
             </div>
         </div>
 
-        <!-- Data Table Section -->
+        <!-- Table -->
         <div id="data-table-container">
             <table id="data-table">
                 <tr id="table-headers">

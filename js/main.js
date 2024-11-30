@@ -1,42 +1,53 @@
 $(document).ready(function () {
+    // App data
     const inputIds = [];
-    let counter = 0;
+    let idCounter = 1;
     let tableData = {
         headers: ["id"],
         rows: []
     };
 
+    // Rules
     const REGEX = /^[a-zA-Z0-9 ]+$/;
     const MAX_LENGTH = 50;
 
+    // Element references
     const ELEMENTS = {
         fieldName: $('#field-name'),
         choiceName: $('#choice-name'),
-        selectChoices: $('#select-choices'),
+        selectChoices: $('#added-choices'),
         inputFields: $('#input-fields'),
         tableHeaders: $('#table-headers'),
         table: $('#data-table'),
         addChoiceBtn: $('#add-choice-btn'),
         addFieldBtn: $('#add-field-btn'),
-        customFormBtn: $('#custom-form-btn')
+        addEntryBtn: $('#add-entry-btn'),
+        addChoicesContainer: $('#add-choices-container'),
+        nullableCheckbox: $('#nullable-checkbox-container')
     }
 
     const RADIO = {
         fieldType: $('input[type="radio"][name="field_type"]')
     };
 
+    // Utilities
     const getChoicesFromInput = () => ELEMENTS.selectChoices.find('li').map((_, li) => $(li).text().trim().slice(0, -1)).get();
-
 
     const checkFieldTypeSelect = () => {
         if (RADIO.fieldType.filter('#select').prop("checked")) {
-            $("#select-edit").show();
-            $("#nullable-checkbox-container").hide();
+            ELEMENTS.addChoicesContainer.show();
+            ELEMENTS.nullableCheckbox.hide();
         } else {
-            $("#nullable-checkbox-container").show();
-            $("#select-edit").hide();
+            ELEMENTS.nullableCheckbox.show();
+            ELEMENTS.addChoicesContainer.hide();
         }
     };
+
+    function getFieldType(fieldId) {
+        if (fieldId.startsWith("select")) return "select"
+        if (fieldId.startsWith("text-nullable")) return "text-nullable"
+        return "text"
+    }
 
     const isFieldAlreadyExists = (fieldName) => {
         return inputIds.includes(`text-${fieldName}`) ||
@@ -51,23 +62,36 @@ $(document).ready(function () {
         return REGEX.test(text) && !(text.length > MAX_LENGTH)
     }
 
-    const clearInputFields = () => {
+    function cleanInputInAddField () {
         ELEMENTS.fieldName.val("");
         ELEMENTS.choiceName.val("");
         ELEMENTS.selectChoices.empty();
     };
 
+    function cleanForm () {
+        inputIds.forEach((id)=> {
+            const type = getFieldType(id)
+            const el = $(`#${id}`)
+            if (type == "select") {
+                el.prop("selectedIndex", 0);
+            } else {el.val("") }
+        })
+    };
+
+    // Initialization
     checkFieldTypeSelect();
 
     RADIO.fieldType.change(checkFieldTypeSelect);
-    ELEMENTS.customFormBtn.click(handleNewEntry);
+    ELEMENTS.addEntryBtn.click(handleNewEntry);
     ELEMENTS.addFieldBtn.click(handleNewField);
     ELEMENTS.inputFields.on("click", ".delete-field-btn", handleInputDeletion);
     ELEMENTS.addChoiceBtn.click(handleNewChoice);
 
 
+    // Handlers
     function handleNewChoice() {
         const choiceName = ELEMENTS.choiceName.val();
+
         if (!isEmptyOrSpaces(choiceName)) {
             const existingChoices = getChoicesFromInput()
             if (!isValidTextInput(choiceName) || existingChoices.includes(choiceName)) {
@@ -100,8 +124,8 @@ $(document).ready(function () {
 
         } else if (fieldType === "Select") {
             const choices = getChoicesFromInput()
-
             if (!choices.length) return alert("Add at least one choice!");
+
             ELEMENTS.inputFields.append(selectFieldMarkup(choices, fieldName));
             inputIds.push(`select-${fieldName}`);
         }
@@ -110,7 +134,7 @@ $(document).ready(function () {
         if (!tableData.headers.includes(fieldName)) {
             tableData.headers.push(fieldName)
         }
-        clearInputFields();
+        cleanInputInAddField();
     };
 
     function handleInputDeletion() {
@@ -124,55 +148,38 @@ $(document).ready(function () {
 
     function handleNewEntry() {
         if (inputIds.length == 0) return alert("No fields to submit!");
-        counter++;
 
-        var row = [counter];
-        for (let i = 1; i < tableData.headers.length; i++) {
-            row.push("");
+        tableData.rows.push(getRow())
+        idCounter++;
+
+        cleanForm()
+        drawTable()
+    }
+
+    // Create/Manage elements
+    function getRow() {
+        var row = [idCounter];
+        for (let i = 0; i < tableData.headers.length - 1; i++) {
+            row.push("")
         }
 
         inputIds.forEach((inputId) =>  {
-            console.log($(`#${inputId}`).val())
             const fileName = inputId.split("-").pop()
             const relativeIndex = tableData.headers.indexOf(fileName)
-            const type = getType(inputId)
-            const el = $(`#${inputId}`)
-            const value = el.val()
+            const type = getFieldType(inputId)
+            const value = $(`#${inputId}`).val()
 
             checkNull()
-            if (relativeIndex === -1) {
-                console.error(`Field name "${fileName}" not found in table headers.`);
-                throw new Error(`Field "${fileName}" does not exist in headers.`);
-            }
+
             row.splice(relativeIndex, 1, value)
-
-
-            resetValues()
-
-            function resetValues() {
-                if (type === "select") {
-                    el.prop("selectedIndex", 0);
-                } else {
-                    el.val("");
-                }
-            }
 
             function checkNull() {
                 if (type == "text" && isEmptyOrSpaces(value)) {
                     alert("Required text field cannot be empty!");
-                    throw new Error("Validation Error");
-                }
+                    throw Error };
             }
-
-            function getType(fieldId) {
-                if (fieldId.startsWith("select")) return "select"
-                if (fieldId.startsWith("text-nullable")) return "text-nullable"
-                return "text"
-            }
-
         })
-        tableData.rows.push(row)
-        drawTable()
+        return row
     }
 
     const drawTable = () => {
@@ -188,8 +195,6 @@ $(document).ready(function () {
             }).join('');
 
             ELEMENTS.table.append(rowsMarkup);
-        } else {
-            ELEMENTS.table.append('<tr><td colspan="100%">No data available</td></tr>');
         }
     };
 
