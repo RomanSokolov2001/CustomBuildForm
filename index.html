@@ -24,38 +24,42 @@
                     <button id="custom-form-btn" type="button">Add New Entry</button>
                 </div>
             </form>
+
             <div id="custom-input">
-                <div id="container-idk">
                     <div id="name-input-container">
                         <div>
                             <a>Name:</a><br>
                             <input id="field-name" type="text" placeholder="Field name">
                         </div>
                         <div>
-                            <a>Type:</a><br>
-                            <input type="radio" id="text" name="field_type" value="Text" checked>
-                            <label for="text">Text</label><br>
-                            <input type="radio" id="select" name="field_type" value="Select">
-                            <label for="select">Select</label><br>
-                        </div>
-                    </div>
-                    <div id="field-select-contaier">
-                        <div id="select-edit">
-                            <div>Choices:</div>
-                            <div id="choice-input-container">
-                                <input type="text" placeholder="Choice" id="choice-name">
-                                <button class="small-btn" type="button" id="add-choice-btn">+</button>
+                            <a>Type:</a>
+                            <div id="type-container">
+                                <input type="radio" id="text" name="field_type" value="Text" checked>
+                                <label for="text">Text</label>
+                            
                             </div>
-                            <ul id="select-choices"></ul>
+                            <div>
+                                <input type="radio" id="select" name="field_type" value="Select">
+                                <label for="select">Select</label>
+                            </div>
                         </div>
-                    </div>
                 </div>
+                
+                <div id="select-edit">
+                    <div>Choices:</div>
+                    <div id="choice-input-container">
+                        <input type="text" placeholder="Choice" id="choice-name">
+                        <button class="small-btn" type="button" id="add-choice-btn">+</button>
+                    </div>
+                    <ul id="select-choices"></ul>
+                </div>
+
                 <div id="add-field-container">
                     <button id="add-field-btn" type="button">Add field</button>
                 </div>
-
             </div>
         </div>
+
         <div>
             <table id="data-table">
                     <tr id="table-headers">
@@ -63,6 +67,7 @@
                     </tr>
             </table>
         </div>
+
     </div>
 </body>
 

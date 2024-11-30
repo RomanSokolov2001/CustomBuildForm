@@ -26,45 +26,47 @@ $(document).ready(function () {
         </tr>
     `;
 
-    const getInputEl = (fieldName) => `
-        <li id="text-${fieldName}">
-            <a>${fieldName}:</a>
-            <input type="text" id="text-${fieldName}">
-            <button class="small-btn delete-field" data-field="${fieldName}">x</button>
-        </li>
-    `;
-
     const getOptionEl = (choice) => `<option value="${choice.trim()}">${choice.trim()}</option>`;
 
+    const getInputEl = (fieldName) => `
+    <li id="li-text-${fieldName}">
+        <a>${fieldName}:</a>
+        <input type="text" id="text-${fieldName}">
+        <button class="small-btn delete-field-btn" data-field-id="text-${fieldName}" type="button">x</button>
+    </li>
+`;
+
     const getSelectorEl = (choices, fieldName) => `
-        <li id="select-${fieldName}" class="select-field-container">
-            <label>${fieldName}:</label>
-            <div class="selector-container">
-                <select id="select-${fieldName}">
-                    ${choices.map((choice) => getOptionEl(choice)).join("")}
-                </select>
-            </div>
-            <button class="small-btn delete-field" data-field="${fieldName}">x</button>
-        </li>
-    `;
+    <li id="li-select-${fieldName}" class="select-field-container">
+        <label>${fieldName}:</label>
+        <div class="selector-container">
+            <select id="select-${fieldName}">
+                ${choices.map((choice) => getOptionEl(choice)).join("")}
+            </select>
+        </div>
+        <button class="small-btn delete-field-btn" data-field-id="select-${fieldName}" type="button">x</button>
+    </li>
+`;
 
-    const getCellEl = (fieldName) => `<th id="header-${fieldName}">${fieldName}</th>`;
+    const getCellEl = (fieldName) => `<th>${fieldName}</th>`;
 
-    const removeColumn = (fieldName) => {
-        // Remove the header
-        $(`#header-${fieldName}`).remove();
-        // Remove the input field
-        $(`#field-${fieldName}`).remove();
-        // Remove the column from the rows
-        $("#data-table tr").each(function () {
-            $(this).find(`td[data-field="${fieldName}"]`).remove();
-        });
-        // Remove field from tracking
-        const index = inputIds.indexOf(fieldName);
-        if (index > -1) inputIds.splice(index, 1);
-    };
+
 
     checkFieldTypeSelect();
+
+    $("#input-fields").on("click", ".delete-field-btn", function () {
+        const fieldId = $(this).data("field-id");
+        const liId = `li-${fieldId}`;
+        console.log(fieldId)
+        console.log(inputIds)
+
+        $(`#${liId}`).remove();
+        const index = inputIds.indexOf(fieldId)
+        if (index > -1) {
+            inputIds[index] = ''
+          } else {console.log('not found')}
+
+    });
 
     $("input[type='radio'][name='field_type']").change(checkFieldTypeSelect);
 
@@ -111,39 +113,25 @@ $(document).ready(function () {
         clearInput();
     });
 
-    $(document).on("click", ".delete-field", function () {
-        const fieldName = $(this).data("field");
-        removeColumn(fieldName);
-    });
-
     $("#custom-form-btn").click(function () {
-        if (inputIds.length === 0) return;
-        var values = [];
+        if (inputIds.length === 0) return
+        const values = [];
         counter++;
 
         inputIds.forEach((id) => {
             if (id.startsWith("text")) {
                 const input = $(`#${id}`).val();
                 values.push(input);
-                console.log(`input: ${input}`)
                 document.getElementById(id).value = "";
-            } else {
+            } else if (id.startsWith("select")) {
                 const input = $(`#${id}`).val();
                 values.push(input);
-                console.log(`input: ${input}`)
                 document.getElementById(id).selectedIndex = 0;
+            } else {
+                values.push('');
             }
         });
-        console.log(inputIds)
-        console.log(values)
 
-
-        const rowHtml = `<tr>
-            <td>${counter}</td>
-            ${values
-                .map((val, i) => `<td data-field="${inputIds[i].split("-")[1]}">${val}</td>`)
-                .join("")}
-        </tr>`;
         $("#data-table").append(getRowEl(counter, values));
     });
 });
